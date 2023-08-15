@@ -28,10 +28,8 @@ public class StudentManagement {
             switch (choice) {
                 case 1:
                     StudentManagement.inputDataStudent();
-//                    StudentManagement.inputDataStudent(sc);
                     break;
                 case 2:
-//                    2. Tính điểm trung bình tất cả sinh viên
                     StudentManagement.averageOfSubject();
                     break;
                 case 3:
@@ -140,7 +138,7 @@ public class StudentManagement {
         }
     }
 
-    //    //8.Thống kê sinh viên theo xếp loại
+    //8.Thống kê sinh viên theo xếp loại
     public static void statisticalClassificationOfStudent() {
         int cntYeu = 0, cntTB = 0, cntKha = 0, cntGioi = 0, cntXuatSac = 0;
         for (Student st : listStudent) {
