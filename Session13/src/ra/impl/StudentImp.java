@@ -1,9 +1,8 @@
 package ra.impl;
 
-import ra.StudentFile.StudentFileWriteAndRead;
+import ra.studentFile.StudentFileWriteAndRead;
 import ra.entity.Student;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -67,7 +66,7 @@ public class StudentImp {
 
         } while (true);
     }
-
+    //Validate choice
     public static int validateChoiceMain() {
         int choiceMain;
         while (true) {
@@ -85,6 +84,7 @@ public class StudentImp {
         return choiceMain;
     }
 
+    //1. Nhập thông tin các sinh viên
     public static void inputDataStudent() {
         System.out.print("Nhập số lượng sinh viên mà bạn muốn thêm :");
         while (true) {
@@ -108,30 +108,20 @@ public class StudentImp {
             }
         }
     }
+    //2. Tính tuổi các sinh viên
     public static void age() {
         for (Student st : listStudent) {
             st.calAge();
         }
         System.out.println("Đã tính xong tuổi của sinh viên xong");
     }
-
+    //3. Tính điểm trung bình và xếp loại sinh viên
     public static void averageOfSubject() {
         for (Student st : listStudent) {
             st.calAvgMark_Rank();
         }
         System.out.println("Đã tính điểm trung bình và xếp loại sinh viên của sinh viên xong");
     }
-
-    public static void displayData(){
-        System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
-        System.out.printf("%-15s%-30s%-10s%-15s%-15s%-20s%-25s%-20s%-20s\n","Mã sinh viên", "Tên sinh viên" , "Tuổi", "Điểm html", "Điểm css", "Điểm javascript", "Điểm trung bình", "Giới tính", "Xếp loại");
-        System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
-        for (Student st:listStudent) {
-            st.displayData();
-        }
-
-    }
-
 
     //4. Sắp xếp sinh viên theo tuổi tăng dần
     public static void sortAscendingOfAge() {
@@ -198,7 +188,7 @@ public class StudentImp {
         }
 
     }
-
+    //7.1 Kiểm tra xem sinh viên cần tìm có hay không
     public static int findStudentByStudentId(String studentIdCheck){
         for (int i = 0; i <listStudent.size() ; i++) {
             if(listStudent.get(i).getStudentId().equals(studentIdCheck)){
@@ -207,7 +197,7 @@ public class StudentImp {
         }
         return -1;
     }
-
+    //7.2 Tìm kiếm sinh viên theo tên sinh viên
     public static void searchStudentByStudentName(){
         System.out.println("Nhập vào tên sinh viên cần tìm: ");
         String studentName = sc.nextLine();
@@ -221,6 +211,16 @@ public class StudentImp {
                 System.out.println("Không tìm thấy sinh viên với tên "+studentName+" mà bạn vừa nhập");
             }
         }
+    }
+    //8. Hiển thị thông tin sinh viên
+    public static void displayData(){
+        System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
+        System.out.printf("%-15s%-30s%-10s%-15s%-15s%-20s%-25s%-20s%-20s\n","Mã sinh viên", "Tên sinh viên" , "Tuổi", "Điểm html", "Điểm css", "Điểm javascript", "Điểm trung bình", "Giới tính", "Xếp loại");
+        System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
+        for (Student st:listStudent) {
+            st.displayData();
+        }
+
     }
 
 

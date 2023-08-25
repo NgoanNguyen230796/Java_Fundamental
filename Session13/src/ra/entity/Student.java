@@ -133,7 +133,7 @@ public class Student implements IEntity<Student>, Serializable {
 
     @Override
     public void displayData() {
-        //String studentId, String studentName, SimpleDateFormat ft, String birthday, int age, boolean sex, float mark_html, float mark_css, float mark_javascript, float avgMark
+        //String studentId, String studentName, int age, float mark_html, float mark_css, float mark_javascript, float avgMark, String sex,String rank
         String studentSex = (this.sex) ? "Nữ" : "Nam";
         System.out.printf("%-15s%-30s%-10d%-17.2f%-15.2f%-20.2f%-25.2f%-20s%-20s\n", this.studentId, this.studentName, this.age, this.mark_html, this.mark_css, this.mark_javascript, this.avgMark,studentSex,this.rank);
     }
@@ -194,7 +194,7 @@ public class Student implements IEntity<Student>, Serializable {
     }
 
     public static String inputStudentName() {
-        //Tên danh mục (không trùng nhau, từ 6-30 kí tự)
+        //Tên sinh viên từ 10-50 kí tự
         System.out.print("Nhập vào tên sinh viên = ");
         while (true) {
             try {
