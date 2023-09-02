@@ -3,10 +3,7 @@ package ra.impl;
 import ra.studentFile.StudentFileWriteAndRead;
 import ra.entity.Student;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class StudentImp {
     public static Scanner sc = new Scanner(System.in);
@@ -14,7 +11,7 @@ public class StudentImp {
 
     public static void main(String[] args) {
         //Đọc dữ liệu từ file listStudent.txt
-        StudentFileWriteAndRead.readDataFromFile();
+        listStudent=StudentFileWriteAndRead.readDataFromFile();
         do {
             System.out.println("*****************************MENU************************");
             System.out.println("1. Nhập thông tin các sinh viên");
@@ -110,56 +107,32 @@ public class StudentImp {
     }
     //2. Tính tuổi các sinh viên
     public static void age() {
-        for (Student st : listStudent) {
-            st.calAge();
-        }
+        listStudent.forEach(Student::calAge);
         System.out.println("Đã tính xong tuổi của sinh viên xong");
     }
     //3. Tính điểm trung bình và xếp loại sinh viên
     public static void averageOfSubject() {
-        for (Student st : listStudent) {
-            st.calAvgMark_Rank();
-        }
+        listStudent.forEach(Student::calAvgMark_Rank);
         System.out.println("Đã tính điểm trung bình và xếp loại sinh viên của sinh viên xong");
     }
 
     //4. Sắp xếp sinh viên theo tuổi tăng dần
     public static void sortAscendingOfAge() {
-        listStudent.sort(new Comparator<Student>() {
-            @Override
-            public int compare(Student o1, Student o2) {
-                return (int)(o1.getAge()-o2.getAge());
-            }
-        });
+        Collections.sort(listStudent,Comparator.comparing(Student::getAge));
         System.out.println("Sắp xếp sinh viên theo tuổi tăng dần là :");
         System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
         System.out.printf("%-15s%-30s%-10s%-15s%-15s%-20s%-25s%-20s%-20s\n","Mã sinh viên", "Tên sinh viên" , "Tuổi", "Điểm html", "Điểm css", "Điểm javascript", "Điểm trung bình", "Giới tính", "Xếp loại");
         System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
-        for (Student st : listStudent) {
-            st.displayData();
-        }
+        listStudent.forEach(Student::displayData);
     }
     //5. Thống kê sinh viên theo xếp loại sinh viên
     public static void statisticalClassificationOfStudent() {
         int cntYeu = 0, cntTB = 0, cntKha = 0, cntGioi = 0, cntXuatSac = 0;
-        for (Student st : listStudent) {
-            switch (st.getRank()) {
-                case "Yếu":
-                    cntYeu++;
-                    break;
-                case "Trung bình":
-                    cntTB++;
-                    break;
-                case "Khá":
-                    cntKha++;
-                    break;
-                case "Giỏi":
-                    cntGioi++;
-                    break;
-                default:
-                    cntXuatSac++;
-            }
-        }
+        cntXuatSac = (int) listStudent.stream().filter(student -> student.getRank().equals("Xuất sắc")).count();
+        cntGioi = (int) listStudent.stream().filter(student -> student.getRank().equals("Giỏi")).count();
+        cntKha = (int) listStudent.stream().filter(student -> student.getRank().equals("Khá")).count();
+        cntTB = (int) listStudent.stream().filter(student -> student.getRank().equals("Trung bình")).count();
+        cntYeu = (int) listStudent.stream().filter(student -> student.getRank().equals("Yếu")).count();
         System.out.println("Thống kê sinh viên theo xếp loại sinh viên là :");
         System.out.printf("%-30s%-30s\n","Xếp loại","Số lượng");
         System.out.printf("%-30s%-30d\n","Xuất sắc",cntXuatSac);
@@ -217,9 +190,7 @@ public class StudentImp {
         System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
         System.out.printf("%-15s%-30s%-10s%-15s%-15s%-20s%-25s%-20s%-20s\n","Mã sinh viên", "Tên sinh viên" , "Tuổi", "Điểm html", "Điểm css", "Điểm javascript", "Điểm trung bình", "Giới tính", "Xếp loại");
         System.out.println("――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――");
-        for (Student st:listStudent) {
-            st.displayData();
-        }
+        listStudent.forEach(Student::displayData);
 
     }
 

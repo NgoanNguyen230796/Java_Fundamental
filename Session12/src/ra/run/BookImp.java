@@ -151,6 +151,8 @@ public class BookImp {
         }
     }
 
+
+
     public static void displayDataBook(){
         List<Book> listBookRead=BookImp.readDataFromFile();
         System.out.println("In ra các sách có giá trong khoảng 10000 đến 20000 là :");

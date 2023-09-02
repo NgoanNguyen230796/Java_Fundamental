@@ -3,6 +3,7 @@ package ra.studentFile;
 import ra.entity.Student;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ra.impl.StudentImp.listStudent;
@@ -47,10 +48,14 @@ public class StudentFileWriteAndRead {
     }
 
     public static List<Student> readDataFromFile() {
+
         //1. Khởi tạo đối tượng File
         File file = new File("listStudent.txt");
         FileInputStream fis = null;
         ObjectInputStream ois = null;
+        if(!file.exists()){
+            return new ArrayList<>();
+        }
         try {
             //2. Khởi tạo đối tượng FileInputStream
             fis = new FileInputStream(file);
@@ -58,8 +63,6 @@ public class StudentFileWriteAndRead {
             ois = new ObjectInputStream(fis);
             //4. Đọc dữ liệu object từ file (readObject())
             listStudent = (List<Student>) ois.readObject();
-        } catch (FileNotFoundException ex1) {
-            System.err.println("Không tồn tại file");
         } catch (IOException ex2) {
             System.err.println("Lỗi khi đọc file");
         } catch (Exception ex) {
@@ -78,8 +81,8 @@ public class StudentFileWriteAndRead {
             } catch (Exception ex) {
                 System.err.println("Có lỗi trong quá trình đóng các stream");
             }
-            return listStudent;
         }
+            return listStudent;
     }
 }
 

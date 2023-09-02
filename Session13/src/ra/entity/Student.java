@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import static ra.impl.StudentImp.listStudent;
 import static ra.impl.StudentImp.sc;
@@ -15,7 +16,7 @@ public class Student implements IEntity<Student>, Serializable {
     private String studentId;
     private String studentName;
 
-    private Date birthday;
+    private String birthday;
     private int age;
     private boolean sex;
     private float mark_html;
@@ -27,7 +28,7 @@ public class Student implements IEntity<Student>, Serializable {
     public Student() {
     }
 
-    public Student(String studentId, String studentName, Date birthday, int age, boolean sex, float mark_html, float mark_css, float mark_javascript, float avgMark, String rank) {
+    public Student(String studentId, String studentName, String birthday, int age, boolean sex, float mark_html, float mark_css, float mark_javascript, float avgMark, String rank) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.birthday = birthday;
@@ -56,11 +57,11 @@ public class Student implements IEntity<Student>, Serializable {
         this.studentName = studentName;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -126,23 +127,24 @@ public class Student implements IEntity<Student>, Serializable {
         this.studentName = inputStudentName();
         this.birthday = inputStudentBirthday();
         this.sex = inputStudentSex();
-        this.mark_html=inputHtmlScore();
-        this.mark_css=inputCssScore();
-        this.mark_javascript=inputJavascriptScore();
+        this.mark_html = inputHtmlScore();
+        this.mark_css = inputCssScore();
+        this.mark_javascript = inputJavascriptScore();
     }
 
     @Override
     public void displayData() {
         //String studentId, String studentName, int age, float mark_html, float mark_css, float mark_javascript, float avgMark, String sex,String rank
         String studentSex = (this.sex) ? "Nữ" : "Nam";
-        System.out.printf("%-15s%-30s%-10d%-17.2f%-15.2f%-20.2f%-25.2f%-20s%-20s\n", this.studentId, this.studentName, this.age, this.mark_html, this.mark_css, this.mark_javascript, this.avgMark,studentSex,this.rank);
+        System.out.printf("%-15s%-30s%-10d%-17.2f%-15.2f%-20.2f%-25.2f%-20s%-20s\n", this.studentId, this.studentName, this.age, this.mark_html, this.mark_css, this.mark_javascript, this.avgMark, studentSex, this.rank);
     }
 
     @Override
     public void calAge() {
         LocalDate localDate = LocalDate.now();
-        SimpleDateFormat dYear=new SimpleDateFormat("yyyy");
-        this.age=(localDate.getYear()-Integer.parseInt(dYear.format(this.birthday)));
+        String[] parts = (this.birthday).split("/");
+        int year = Integer.parseInt(parts[2]);
+        this.age = (localDate.getYear() - year);
     }
 
     @Override
@@ -162,7 +164,7 @@ public class Student implements IEntity<Student>, Serializable {
     }
 
 
-    public String inputStudentId() {
+    public static String inputStudentId() {
         System.out.print("Nhập vào mã sinh viên = ");
         while (true) {
             try {
@@ -211,23 +213,62 @@ public class Student implements IEntity<Student>, Serializable {
         }
     }
 
-    public static Date inputStudentBirthday() {
-        Date birthday;
-        SimpleDateFormat formatBirthday = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat dYear=new SimpleDateFormat("yyyy");
-        System.out.print("Nhập vào ngày sinh của sinh viên = ");
+    //    public static Date inputStudentBirthday() {
+//        Date birthday;
+//        SimpleDateFormat formatBirthday = new SimpleDateFormat("dd/MM/yyyy");
+//        SimpleDateFormat dYear=new SimpleDateFormat("yyyy");
+//        SimpleDateFormat dMonth=new SimpleDateFormat("MM");
+//        SimpleDateFormat dDay=new SimpleDateFormat("dd");
+//        System.out.print("Nhập vào ngày sinh của sinh viên = ");
+//        while (true) {
+//            try {
+//                birthday = formatBirthday.parse(sc.nextLine());
+//                int changeYear= Integer.parseInt(dYear.format(birthday));
+//                int changeMonth= Integer.parseInt(dMonth.format(birthday));
+//                int changeDay= Integer.parseInt(dDay.format(birthday));
+//                if (changeYear <= 2005) {
+//                    return birthday;
+//                } else {
+//                    System.err.println("Ngày sinh phải có năm sinh trước năm 2005 , vui lòng nhập lại");
+//                }
+//
+//            } catch (ParseException pe) {
+//                System.err.println("Ngày sinh không đúng định dạng dd/MM/yyyy, vui lòng nhập lại");
+//            }
+//        }
+//    }
+    public static String inputStudentBirthday(){
+        System.out.print("Nhập vào ngày sinh của sinh viên =");
         while (true) {
-            try {
-                birthday = formatBirthday.parse(sc.nextLine());
-                int changeYear= Integer.parseInt(dYear.format(birthday));
-                if (changeYear <= 2005) {
-                    return birthday;
-                } else {
-                    System.err.println("Ngày sinh phải có năm sinh trước năm 2005 , vui lòng nhập lại");
-                }
-
-            } catch (ParseException pe) {
+            String studentBirthday = sc.nextLine();
+            if (!Pattern.matches("^\\d{1,2}/\\d{1,2}/\\d{4}", studentBirthday)) {
                 System.err.println("Ngày sinh không đúng định dạng dd/MM/yyyy, vui lòng nhập lại");
+            }else{
+                // Parse the date parts to integers
+                String[] parts = studentBirthday.split("/");
+                int day = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+                int year = Integer.parseInt(parts[2]);
+
+                // Check the ranges of month and year
+
+                if (year >2005) {
+                    System.err.println("Ngày sinh phải có năm sinh trước năm 2005 , vui lòng nhập lại");
+                } else if (month == 0 || month > 12) {
+                    System.err.println("Tháng sinh phải từ 1-12, vui lòng nhập lại");
+                } else if (day == 0 || day > 31) {
+                    System.err.println("Ngày sinh phải từ 1-31 , vui lòng nhập lại");
+                } else {
+                    int[] monthLength = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+                    // Adjust for leap years
+                    if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
+                        monthLength[1] = 29;
+                    }
+                    // Check the range of the day
+                    if (day > 0 && day <= monthLength[month - 1]) {
+                        return studentBirthday;
+                    }
+                }
             }
         }
     }
@@ -261,6 +302,7 @@ public class Student implements IEntity<Student>, Serializable {
         }
 
     }
+
     public static float inputCssScore() {
         System.out.print("Nhập vào điểm CSS = ");
         while (true) {
@@ -278,6 +320,7 @@ public class Student implements IEntity<Student>, Serializable {
         }
 
     }
+
     public static float inputJavascriptScore() {
         System.out.print("Nhập vào điểm Javascript = ");
         while (true) {

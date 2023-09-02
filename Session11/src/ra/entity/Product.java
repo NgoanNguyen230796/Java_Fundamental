@@ -120,28 +120,21 @@ public class Product implements IShop<Product> {
         } while (true);
         System.out.print("Nhập vào giá sản phẩm = ");
         do {
-            String inputPrice = sc.nextLine();
-            String regexNumber = "\\d+";
-            if (Pattern.matches(regexNumber, inputPrice)) {
-                this.price = Integer.parseInt(inputPrice);
-                break;
-            } else {
+            try{
+                this.price=Float.parseFloat(sc.nextLine());
+                if(this.price>0){
+                    break;
+                }else{
+                    System.err.println("Giá sản phẩm phải là kiểu số thực,có giá trị lớn hơn 0 ,vui lòng nhập lại");
+                }
+            }catch (NumberFormatException ex){
                 System.err.println("Giá sản phẩm phải là số,vui lòng nhập lại");
             }
-
         } while (true);
         System.out.print("Nhập vào tiêu đề sản phẩm = ");
         this.title = sc.nextLine();
         System.out.print("Nhập vào trạng thái sản phẩm (true/false)= ");
-        do {
-            String inputStatus = sc.nextLine();
-            if (inputStatus.equals("true") || inputStatus.equals("false")) {
-                this.status = Boolean.parseBoolean(inputStatus);
-                break;
-            } else {
-                System.err.println("Trạng thái sản phẩm phải là true/false,vui lòng nhập lại");
-            }
-        } while (true);
+        this.status = Boolean.parseBoolean(sc.nextLine());
     }
 
     @Override

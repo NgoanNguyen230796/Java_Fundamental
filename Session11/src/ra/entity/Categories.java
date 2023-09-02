@@ -1,5 +1,6 @@
 package ra.entity;
 
+import javafx.beans.binding.BooleanExpression;
 import ra.IShop;
 
 import java.util.List;
@@ -53,25 +54,29 @@ public class Categories implements IShop<Categories> {
     public void inputData(Scanner sc, List<Categories> listCategories) {
         System.out.print("Nhập vào mã danh mục sản phẩm (phải là số)= ");
         do {
-            String isCheckCatalogIdNumber = sc.nextLine();
-            String regexNumber = "\\d+";
-            if (Pattern.matches(regexNumber, isCheckCatalogIdNumber)) {
-                this.catalogId = Integer.parseInt(isCheckCatalogIdNumber);
-                boolean isCheckCatalogId = false;
-                for (Categories ca : listCategories) {
-                    if (ca.catalogId == this.catalogId) {
-                        isCheckCatalogId = true;
+            try{
+                this.catalogId = Integer.parseInt(sc.nextLine());
+                if(this.catalogId>0){
+                    boolean isCheckCatalogId = false;
+                    for (Categories ca : listCategories) {
+                        if (ca.catalogId == this.catalogId) {
+                            isCheckCatalogId = true;
+                            break;
+                        }
+                    }
+                    if (isCheckCatalogId) {
+                        System.err.println("Mã danh mục sản phẩm đã bị trùng, vui lòng nhập lại");
+                    } else {
                         break;
                     }
+                }else{
+                    System.err.println("Mã danh mục sản phẩm phải là số nguyên lớn hơn 0, vui lòng nhập lại");
                 }
-                if (isCheckCatalogId) {
-                    System.err.println("Mã danh mục sản phẩm đã bị trùng, vui lòng nhập lại");
-                } else {
-                    break;
-                }
-            } else {
+
+            }catch (NumberFormatException ex){
                 System.err.println("Mã danh mục sản phẩm phải là số, vui lòng nhập lại");
             }
+
         } while (true);
         System.out.print("Nhập vào tên danh mục sản phẩm = ");
         do {
@@ -91,22 +96,13 @@ public class Categories implements IShop<Categories> {
 
         } while (true);
         System.out.print("Nhập vào trạng thái danh mục (true/false)=");
-
-        do {
-            String inputStatus = sc.nextLine();
-            if (inputStatus.equals("true") || inputStatus.equals("false")) {
-                this.status = Boolean.parseBoolean(inputStatus);
-                break;
-            } else {
-                System.err.println("Trạng thái danh mục phải là true/false, vui lòng nhập lại");
-            }
-        } while (true);
+        this.status=Boolean.parseBoolean(sc.nextLine());
     }
 
     @Override
     public void displayData() {
         String statusValue = this.status ? "Active" : "InActive";
-        System.out.printf("%-30d%-30s%-30s\n", this.catalogId, this.catalogName, statusValue);
+        System.out.printf("| %-30d |%-30s | %-20s |\n", this.catalogId, this.catalogName, statusValue);
     }
 
     public static int indexDataCatalogIdFind(int catalogIdFind) {
@@ -120,7 +116,7 @@ public class Categories implements IShop<Categories> {
 
     public static boolean isCheckTrungCatalogName(String catalogNameCheck) {
         for (Categories ca : listCategories) {
-            if (ca.catalogName.equals(catalogNameCheck)) {
+            if (ca.catalogName.toLowerCase().equalsIgnoreCase(catalogNameCheck)) {
                 return true;
             }
         }

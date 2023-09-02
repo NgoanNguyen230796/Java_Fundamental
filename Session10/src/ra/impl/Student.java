@@ -2,11 +2,12 @@ package ra.impl;
 
 import ra.IStudent;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-public class Student implements IStudent {
+public class Student implements IStudent, Serializable {
     public String studentId;
     public String studentName;
     public int age;
